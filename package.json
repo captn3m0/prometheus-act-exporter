@@ -1,0 +1,19 @@
+{
+  "name": "prometheus-act-exporter",
+  "version": "1.0.0",
+  "description": "Exports ACT data usage as prometheus metrics",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "actcorp",
+    "balance",
+    "flexibyte"
+  ],
+  "author": "Nemo <npm@captnemo.in>",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer": "^1.4.0"
+  }
+}
