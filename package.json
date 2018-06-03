@@ -14,6 +14,7 @@
   "author": "Nemo <npm@captnemo.in>",
   "license": "MIT",
   "dependencies": {
+    "prom-client": "^11.0.0",
     "puppeteer": "^1.4.0"
   }
 }

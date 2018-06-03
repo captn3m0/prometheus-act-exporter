@@ -5,11 +5,11 @@ const DATA_SELECTOR='packagecol3';
 
 const REGEX = /\d+\.\d{0,2}/g
 
-async function run() {
+async function getUsage() {
   const browser = await puppeteer.launch({
-  	executablePath: "/usr/bin/chromium-snapshot-bin",
-  	args: ["--proxy-server=socks5://10.8.0.14:1080"],
-  	headless: false
+    executablePath: "/usr/bin/chromium-snapshot-bin",
+    args: ["--proxy-server=socks5://10.8.0.14:1080"],
+    headless: false
   });
 
   const page = await browser.newPage();
@@ -17,12 +17,19 @@ async function run() {
   await page.click(MY_PACKAGE_SELECTOR_ID);
   await page.waitFor(3000),
   text = await page.evaluate((sel) => {
-  	return document.getElementsByClassName(sel)[3].innerText;
-  }, DATA_SELECTOR)
+    return document.getElementsByClassName(sel)[3].innerText;
+  }, DATA_SELECTOR);
   
   [used,total] = text.match(REGEX).map((x) => parseFloat(x))
   
   browser.close();
+
+  return {
+    used: used,
+    total: total
+  };
 }
 
-run()
+module.exports = {
+  getUsage: getUsage
+};
