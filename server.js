@@ -33,6 +33,11 @@ const requestHandler = async (req, res) => {
 
             break;
         default:
+            res.writeHead(302, {
+                Location:
+                    'https://git.captnemo.in/nemo/prometheus-node-exporter',
+            });
+            res.end();
             break;
     }
 };
