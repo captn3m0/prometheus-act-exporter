@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const containerized = require('containerized');
 
 const MY_PACKAGE_SELECTOR_ID =
   'table[style="margin-top:-10px;"] tr:first-child+tr';
@@ -36,8 +37,14 @@ async function getUsage() {
 }
 
 function chromeLaunchConfig() {
+  let defaultArgs = [];
+  if (containerized()) {
+    defaultArgs = ['--no-sandbox', '--disable-setuid-sandbox'];
+  }
   var options = {
-    args: ['--no-sandbox', '--disable-setuid-sandbox'].concat(
+    // These are set for Docker usage
+    // https://github.com/alekzonder/docker-puppeteer#before-usage
+    args: defaultArgs.concat(
       process.env.hasOwnProperty('PROXY_SERVER')
         ? [`--proxy-server=${process.env['PROXY_SERVER']}`]
         : []

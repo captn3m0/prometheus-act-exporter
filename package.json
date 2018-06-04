@@ -6,10 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["actcorp", "balance", "flexibyte"],
+  "keywords": [
+    "actcorp",
+    "balance",
+    "flexibyte"
+  ],
   "author": "Nemo <npm@captnemo.in>",
   "license": "MIT",
   "dependencies": {
+    "containerized": "^1.0.2",
     "prom-client": "^11.0.0",
     "puppeteer": "^1.4.0"
   }
