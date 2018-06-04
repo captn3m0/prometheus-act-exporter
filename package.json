@@ -6,13 +6,16 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "actcorp",
-    "balance",
-    "flexibyte"
-  ],
+  "keywords": ["actcorp", "balance", "flexibyte"],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@git.captnemo.in/nemo/prometheus-act-exporter.git"
+  },
+  "bugs": {
+    "url": "https://git.captnemo.in/nemo/prometheus-act-exporter/issues"
+  },
   "author": "Nemo <npm@captnemo.in>",
-  "license": "MIT",
+  "license": "WTFPL",
   "dependencies": {
     "containerized": "^1.0.2",
     "prom-client": "^11.0.0",

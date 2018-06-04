@@ -10,6 +10,6 @@ RUN npm install
 
 COPY index.js server.js /app/
 
-ENTRYPOINT ["/usr/bin/node", "server"]
+ENTRYPOINT ["/usr/local/bin/node", "server.js"]
 
 EXPOSE 3000
