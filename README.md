@@ -43,3 +43,9 @@ You can pass the following environment variables:
 1.  `PROXY_SERVER`: Use a proxy server to connect to ACT. Use a `socks5` proxy, since ACT returns a 403 if you try to use a CONNECT proxy. `export PROXY_SERVER="socks5://10.8.0.14:1080"`
 2.  `CHROME_BIN`: Set Chrome/Chromium executable path.
 3.  `DISABLE_HEADLESS`: If set, chrome will not launch in headless mode.
+
+# LICENSE
+
+This is licensed under WTFPL. See COPYING file for the full text.
+
+The canonical URL for this project is <https://git.captnemo.in/nemo/prometheus-act-exporter>.
