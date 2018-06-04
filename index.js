@@ -7,30 +7,41 @@ const DATA_SELECTOR = 'packagecol3';
 const REGEX = /\d+\.\d{0,2}/g;
 
 async function getUsage() {
-  const browser = await puppeteer.launch({
-    executablePath: '/usr/bin/chromium-snapshot-bin',
-    args: ['--proxy-server=socks5://10.8.0.14:1080'],
-    headless: true,
-  });
-
-  const page = await browser.newPage();
-  await page.goto('http://portal.actcorp.in/group/blr/myaccount');
-  await page.click(MY_PACKAGE_SELECTOR_ID);
-  await page.waitFor(3000),
-    (text = await page.evaluate(sel => {
-      return document.getElementsByClassName(sel)[3].innerText;
-    }, DATA_SELECTOR));
-
-  browser.close();
-
-  [used, total] = text.match(REGEX).map(x => parseFloat(x));
-
-  return {
-    used: used,
-    total: total,
+  var options = {
+    executablePath:
+      process.env['CHROME_BIN'] || '/usr/bin/chromium-snapshot-bin',
+    args: ['--no-sandbox', '--disable-setuid-sandbox'].concat(
+      process.env.hasOwnProperty['PROXY_SERVER']
+        ? [`--proxy-server=${process.env['PROXY_SERVER']}`]
+        : []
+    ),
   };
+
+  let metrics = {
+    used: null,
+    total: null,
+  };
+
+  try {
+    const page = await browser.newPage();
+    await page.goto('http://portal.actcorp.in/group/blr/myaccount');
+    await page.click(MY_PACKAGE_SELECTOR_ID);
+    await page.waitFor(3000),
+      (text = await page.evaluate(sel => {
+        return document.getElementsByClassName(sel)[3].innerText;
+      }, DATA_SELECTOR));
+    [metrics.used, metrics.total] = text.match(REGEX).map(x => parseFloat(x));
+  } catch (e) {
+    console.log("Could'nt scrape ACT page, faced an error");
+  } finally {
+    page.close();
+    return metrics;
+  }
 }
 
-module.exports = {
-  getUsage: getUsage,
-};
+(async () => {
+  const browser = await puppeteer.launch(args);
+  module.exports = {
+    getUsage: getUsage,
+  };
+})();
