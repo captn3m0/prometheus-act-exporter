@@ -6,13 +6,13 @@ const metrics = require('./index');
 pClient.collectDefaultMetrics({ timeout: 60000 });
 
 let usedGauge = new pClient.Gauge({
-    name: 'act_fup_usage_gigabytes_total',
-    help: 'ACT current usage in GB',
+    name: 'act_fup_usage_bytes',
+    help: 'ACT current usage in bytes (precision GB)',
 });
 
 let totalGauge = new pClient.Gauge({
-    name: 'act_fup_max_gigabytes_total',
-    help: 'ACT FUP limit in GB',
+    name: 'act_fup_max_bytes',
+    help: 'ACT FUP limit in bytes (precision GB)',
 });
 
 const requestHandler = async (req, res) => {
@@ -23,8 +23,8 @@ const requestHandler = async (req, res) => {
             let m = await metrics.getUsage();
             // TODO: Switch to the correct err, res pattern with promise
             if (m !== null) {
-                usedGauge.set(m.used);
-                totalGauge.set(m.total);
+                usedGauge.set(m.usedBytes);
+                totalGauge.set(m.totalBytes);
 
                 res.setHeader('Content-Type', pClient.register.contentType);
                 res.end(pClient.register.metrics());
@@ -37,7 +37,7 @@ const requestHandler = async (req, res) => {
         default:
             res.writeHead(302, {
                 Location:
-                    'https://git.captnemo.in/nemo/prometheus-node-exporter',
+                    'https://git.captnemo.in/nemo/prometheus-act-exporter',
             });
             res.end();
             break;

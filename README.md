@@ -2,7 +2,7 @@
 
 Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from the ACT Portal website by using puppeteer.
 
--   Does not support flexibytes yet.
+-   Does not support flexibytes yet (PRs welcome)
 -   Only tested for ACT Bangalore connections.
 
 ## Metrics
@@ -10,13 +10,13 @@ Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from 
 Sample:
 
 ```
-# HELP act_fup_usage_gigabytes_total ACT current usage in GB
-# TYPE act_fup_usage_gigabytes_total gauge
-act_fup_usage_gigabytes_total 41.42
+# HELP act_fup_usage_bytes ACT current usage in bytes (precision GB)
+# TYPE act_fup_usage_bytes gauge
+act_fup_usage_bytes 41.42
 
-# HELP act_fup_max_gigabytes_total ACT FUP limit in GB
-# TYPE act_fup_max_gigabytes_total gauge
-act_fup_max_gigabytes_total 500
+# HELP act_fup_max_bytes ACT FUP limit in bytes (precision GB)
+# TYPE act_fup_max_bytes gauge
+act_fup_max_bytes 500
 ```
 
 # Using as a npm package
@@ -30,10 +30,13 @@ console.log(m)
 // Returns
 //
 // {
-//    used: 2.34,
-//    total: 150,
+//    used: 102.92,
+//    total: 500,
+//    usedBytes: 102920000,
+//    totalBytes: 500000000
 //  }
-//  All values in GB
+//  used/total are in GB, other 2 are in bytes
+// calculations made assuming ACT is using SI GB (exactly 1 billion bytes)
 ```
 
 # Configuration

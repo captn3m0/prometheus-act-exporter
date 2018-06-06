@@ -12,6 +12,8 @@ async function getUsage() {
   let metrics = {
     used: null,
     total: null,
+    usedBytes: null,
+    totalBytes: null,
   };
 
   const page = await browser.newPage();
@@ -26,6 +28,9 @@ async function getUsage() {
     [metrics.used, metrics.total] = text
       .match(DATA_USAGE_REGEX)
       .map(x => parseFloat(x));
+
+    metrics.usedBytes = metrics.used * Math.pow(10, 6);
+    metrics.totalBytes = metrics.total * Math.pow(10, 6);
   } catch (e) {
     console.log("Couldn't scrape ACT page, faced an error");
     console.log(e);
