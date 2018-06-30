@@ -1,5 +1,13 @@
 # CHANGELOG
 
+# 2.0.0-beta
+
+-   Adds support for Flexibytes and aggregate metrics
+-   Standardized Prometheus formatting to support 3 categories: `live/flexibytes/aggregate`
+-   Added standard [schema labels](http://label-schema.org/) in Dockerfile
+-   Upgraded puppeteer to 1.5.0
+-   Changed return format of `.getUsage()` method
+
 # 1.0.2
 
 -   Switches to bytes as the unit in the metrics endpoint
