@@ -18,7 +18,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.schema-version="1.0.0-rc1"
 
-COPY index.js server.js /app/
+COPY index.js server.js prom.js *.md /app/
 
 ENTRYPOINT ["/usr/local/bin/node", "server.js"]
 
