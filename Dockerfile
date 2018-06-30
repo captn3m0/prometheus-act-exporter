@@ -1,6 +1,6 @@
 FROM alekzonder/puppeteer:1
 
-LABEL maintainer Nemo <docker@captnemo.in>
+LABEL maintainer "Nemo <docker@captnemo.in>"
 
 ARG BUILD_DATE
 ARG VCS_REF
