@@ -1,38 +1,15 @@
 const http = require('http');
 const port = 3000;
-const pClient = require('prom-client');
 const metrics = require('./index');
-
-pClient.collectDefaultMetrics({ timeout: 60000 });
-
-let usedGauge = new pClient.Gauge({
-    name: 'act_fup_usage_bytes',
-    help: 'ACT current usage in bytes (precision GB)',
-});
-
-let totalGauge = new pClient.Gauge({
-    name: 'act_fup_max_bytes',
-    help: 'ACT FUP limit in bytes (precision GB)',
-});
+const promFormatter = require('./prom');
 
 const requestHandler = async (req, res) => {
     let date = new Date(Date.now()).toLocaleString();
     console.log(`${date}: ${req.url}`);
     switch (req.url) {
         case '/metrics':
-            let m = await metrics.getUsage();
-            // TODO: Switch to the correct err, res pattern with promise
-            if (m !== null) {
-                usedGauge.set(m.usedBytes);
-                totalGauge.set(m.totalBytes);
-
-                res.setHeader('Content-Type', pClient.register.contentType);
-                res.end(pClient.register.metrics());
-            } else {
-                res.sendStatus(500);
-                res.end('Scrape failed');
-            }
-
+            res.setHeader('Content-Type', promFormatter.contentType);
+            res.end(promFormatter.format(await metrics.getUsage()));
             break;
         default:
             res.writeHead(302, {
@@ -48,7 +25,7 @@ const server = http.createServer(requestHandler);
 
 server.listen(port, err => {
     if (err) {
-        return console.log('something bad happened', err);
+        return console.log('could not initialize web server', err);
     }
 
     console.log(`server is listening on ${port}`);

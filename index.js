@@ -6,6 +6,7 @@ const MY_PACKAGE_SELECTOR_ID =
 const DATA_SELECTOR = 'packagecol3';
 
 const DATA_USAGE_REGEX = /\d+\.\d{0,2}/g;
+const KEYS = ['live', 'flexibytes'];
 var browser;
 
 async function getUsage() {
@@ -28,17 +29,19 @@ async function getUsage() {
     await page.waitFor(3000),
       (dataUsage = await page.evaluate(sel => {
         let elements = document.getElementsByClassName(sel);
+
+        if (!elements || elements.length < 4) {
+          return '0.00 0.00';
+        }
         let usage = {
           live: elements[3].innerText,
           aggregate: '0.00 GB (Quota 800.00 GB)',
         };
-        if (elements.length >= 5) {
+        if (elements.length >= 6) {
           usage['flexibytes'] = elements[5].innerText;
         }
         return usage;
       }, DATA_SELECTOR));
-
-    const KEYS = ['live', 'flexibytes'];
 
     // ['0.00 GB (Quota 800.00 GB)', '102.58 GB(Quota 100.00 GB)']
     KEYS.map(key => {
