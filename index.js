@@ -9,28 +9,55 @@ const DATA_USAGE_REGEX = /\d+\.\d{0,2}/g;
 var browser;
 
 async function getUsage() {
-  let metrics = {
-    used: null,
-    total: null,
+  const page = await browser.newPage();
+
+  let defaultMetric = {
     usedBytes: null,
     totalBytes: null,
   };
 
-  const page = await browser.newPage();
+  let metrics = {
+    live: defaultMetric,
+    flexibytes: defaultMetric,
+    aggregate: defaultMetric,
+  };
 
   try {
     await page.goto('http://portal.actcorp.in/group/blr/myaccount');
     await page.click(MY_PACKAGE_SELECTOR_ID);
     await page.waitFor(3000),
-      (text = await page.evaluate(sel => {
-        return document.getElementsByClassName(sel)[3].innerText;
+      (dataUsage = await page.evaluate(sel => {
+        let elements = document.getElementsByClassName(sel);
+        let usage = {
+          live: elements[3].innerText,
+          aggregate: '0.00 GB (Quota 800.00 GB)',
+        };
+        if (elements.length >= 5) {
+          usage['flexibytes'] = elements[5].innerText;
+        }
+        return usage;
       }, DATA_SELECTOR));
-    [metrics.used, metrics.total] = text
-      .match(DATA_USAGE_REGEX)
-      .map(x => parseFloat(x));
 
-    metrics.usedBytes = metrics.used * Math.pow(10, 6);
-    metrics.totalBytes = metrics.total * Math.pow(10, 6);
+    const KEYS = ['live', 'flexibytes'];
+
+    // ['0.00 GB (Quota 800.00 GB)', '102.58 GB(Quota 100.00 GB)']
+    KEYS.map(key => {
+      dataUsage[key] = dataUsage[key]
+        .match(DATA_USAGE_REGEX)
+        .map(x => parseFloat(x) * Math.pow(10, 6));
+    });
+    dataUsage.aggregate = { usedBytes: 0, totalBytes: 0 };
+
+    KEYS.map(key => {
+      dataUsage[key] = {
+        usedBytes: dataUsage[key][0],
+        totalBytes: dataUsage[key][1],
+      };
+      dataUsage.aggregate.usedBytes += dataUsage[key].usedBytes;
+      dataUsage.aggregate.totalBytes += dataUsage[key].totalBytes;
+    });
+
+    metrics = dataUsage;
   } catch (e) {
     console.log("Couldn't scrape ACT page, faced an error");
     console.log(e);
