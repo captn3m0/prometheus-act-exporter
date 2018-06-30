@@ -2,7 +2,8 @@
 
 Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from the ACT Portal website by using puppeteer.
 
--   Does not support flexibytes yet (PRs welcome)
+-   Supports flexibytes
+-   Reports aggregate metrics as well
 -   Only tested for ACT Bangalore connections.
 
 ## Metrics
@@ -10,13 +11,29 @@ Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from 
 Sample:
 
 ```
-# HELP act_fup_usage_bytes ACT current usage in bytes (precision GB)
-# TYPE act_fup_usage_bytes gauge
-act_fup_usage_bytes 41.42
+# HELP act_fup_live_usage_bytes ACT live usage in bytes (precision GB)
+# TYPE act_fup_live_usage_bytes gauge
+act_fup_live_usage_bytes 0
 
-# HELP act_fup_max_bytes ACT FUP limit in bytes (precision GB)
-# TYPE act_fup_max_bytes gauge
-act_fup_max_bytes 500
+# HELP act_fup_live_total_bytes ACT live usage in bytes (precision GB)
+# TYPE act_fup_live_total_bytes gauge
+act_fup_live_total_bytes 800000000
+
+# HELP act_fup_flexibytes_usage_bytes ACT flexibytes usage in bytes (precision GB)
+# TYPE act_fup_flexibytes_usage_bytes gauge
+act_fup_flexibytes_usage_bytes 102580000
+
+# HELP act_fup_flexibytes_total_bytes ACT flexibytes usage in bytes (precision GB)
+# TYPE act_fup_flexibytes_total_bytes gauge
+act_fup_flexibytes_total_bytes 100000000
+
+# HELP act_fup_aggregate_usage_bytes ACT aggregate usage in bytes (precision GB)
+# TYPE act_fup_aggregate_usage_bytes gauge
+act_fup_aggregate_usage_bytes 102580000
+
+# HELP act_fup_aggregate_total_bytes ACT aggregate usage in bytes (precision GB)
+# TYPE act_fup_aggregate_total_bytes gauge
+act_fup_aggregate_total_bytes 900000000
 ```
 
 # Using as a npm package
@@ -26,16 +43,12 @@ Install it with `npm i prometheus-act-exporter`.
 ```js
 const act = require('prometheus-act-exporter')
 let m = await act.getUsage();
-console.log(m)
 // Returns
-//
 // {
-//    used: 102.92,
-//    total: 500,
-//    usedBytes: 102920000,
-//    totalBytes: 500000000
-//  }
-//  used/total are in GB, other 2 are in bytes
+//   live: { usedBytes: 0, totalBytes: 800000000 },
+//   flexibytes: { usedBytes: 102580000, totalBytes: 100000000 },
+//   aggregate: { usedBytes: 102580000, totalBytes: 900000000 }
+// }
 // calculations made assuming ACT is using SI GB (exactly 1 billion bytes)
 ```
 

@@ -12,7 +12,7 @@ KEYS.map(key => {
 	});
 
 	gauges[`${key}_total`] = new pClient.Gauge({
-		name: `act_fup_${key}_total_usage_bytes`,
+		name: `act_fup_${key}_total_bytes`,
 		help: `ACT ${key} usage in bytes (precision GB)`,
 	});
 });
