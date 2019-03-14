@@ -1,6 +1,6 @@
 {
   "name": "prometheus-act-exporter",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Exports ACT Fibernet data usage as prometheus metrics",
   "main": "index.js",
   "scripts": {
