@@ -1,12 +1,16 @@
 {
   "name": "prometheus-act-exporter",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Exports ACT Fibernet data usage as prometheus metrics",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["actcorp", "balance", "flexibyte"],
+  "keywords": [
+    "actcorp",
+    "balance",
+    "flexibyte"
+  ],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@git.captnemo.in/nemo/prometheus-act-exporter.git"
@@ -18,7 +22,7 @@
   "license": "WTFPL",
   "dependencies": {
     "containerized": "^1.0.2",
-    "prom-client": "^11.1.0",
-    "puppeteer-core": "^1.8.0"
+    "prom-client": "^11.3.0",
+    "puppeteer-core": "^1.15.0"
   }
 }

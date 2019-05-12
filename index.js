@@ -1,27 +1,30 @@
-const puppeteer = require('puppeteer-core');
-const containerized = require('containerized');
+const puppeteer = require("puppeteer-core");
+const containerized = require("containerized");
 
 const MY_PACKAGE_SELECTOR_ID =
   'table[style="margin-top:-10px;"] tr:first-child+tr';
-const DATA_SELECTOR = 'packagecol3';
-const MY_ACCOUNT_URL = 'https://selfcare.actcorp.in/group/blr/myaccount';
+const DATA_SELECTOR = "packagecol3";
+const MY_ACCOUNT_URL = "https://selfcare.actcorp.in/group/blr/myaccount";
 const DATA_USAGE_REGEX = /\d+\.\d{0,2}/g;
-const KEYS = ['live', 'flexibytes'];
+const KEYS = ["live", "flexibytes"];
 
 var browser;
 
 async function getUsage() {
+  if (!browser) {
+    throw new Error("Browser not launched yet");
+  }
   const page = await browser.newPage();
 
   let defaultMetric = {
     usedBytes: null,
-    totalBytes: null,
+    totalBytes: null
   };
 
   let metrics = {
     live: defaultMetric,
     flexibytes: defaultMetric,
-    aggregate: defaultMetric,
+    aggregate: defaultMetric
   };
 
   try {
@@ -36,14 +39,14 @@ async function getUsage() {
       let elements = document.getElementsByClassName(sel);
 
       if (!elements || elements.length < 4) {
-        return '0.00 0.00';
+        return "0.00 0.00";
       }
       let usage = {
         live: elements[3].innerText,
-        aggregate: '0.00 GB (Quota 800.00 GB)',
+        aggregate: "0.00 GB (Quota 800.00 GB)"
       };
       if (elements.length >= 6) {
-        usage['flexibytes'] = elements[5].innerText;
+        usage["flexibytes"] = elements[5].innerText;
       }
       return usage;
     }, DATA_SELECTOR);
@@ -59,7 +62,7 @@ async function getUsage() {
     KEYS.map(key => {
       dataUsage[key] = {
         usedBytes: dataUsage[key][0],
-        totalBytes: dataUsage[key][1],
+        totalBytes: dataUsage[key][1]
       };
       dataUsage.aggregate.usedBytes += dataUsage[key].usedBytes;
       dataUsage.aggregate.totalBytes += dataUsage[key].totalBytes;
@@ -79,27 +82,27 @@ async function getUsage() {
 function chromeLaunchConfig() {
   let defaultArgs = [];
   if (containerized()) {
-    defaultArgs = ['--no-sandbox', '--disable-setuid-sandbox'];
+    defaultArgs = ["--no-sandbox", "--disable-setuid-sandbox"];
   }
   var options = {
     // These are set for Docker usage
     // https://github.com/alekzonder/docker-puppeteer#before-usage
     args: defaultArgs.concat(
-      process.env.hasOwnProperty('PROXY_SERVER')
-        ? [`--proxy-server=${process.env['PROXY_SERVER']}`]
+      process.env.hasOwnProperty("PROXY_SERVER")
+        ? [`--proxy-server=${process.env["PROXY_SERVER"]}`]
         : []
-    ),
+    )
   };
 
-  if (process.env.hasOwnProperty('DISABLE_HEADLESS')) {
+  if (process.env.hasOwnProperty("DISABLE_HEADLESS")) {
     options.headless = false;
   }
 
-  if (process.env.hasOwnProperty('CHROME_BIN')) {
-    options.executablePath = process.env['CHROME_BIN'];
+  if (process.env.hasOwnProperty("CHROME_BIN")) {
+    options.executablePath = process.env["CHROME_BIN"];
   }
 
-  console.log('Launching Chrome with args:');
+  console.log("Launching Chrome with args:");
   console.log(options);
 
   return options;
@@ -108,9 +111,9 @@ function chromeLaunchConfig() {
 // Async IIFE FTW
 (async () => {
   browser = await puppeteer.launch(chromeLaunchConfig());
-  console.log('Browser Initialized');
+  console.log("Browser Initialized");
 })();
 
 module.exports = {
-  getUsage: getUsage,
+  getUsage: getUsage
 };
