@@ -7,9 +7,13 @@ ARG VCS_REF
 
 WORKDIR /app
 
+# Ensure that the chromium path hasn't changed
+RUN ls /usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/linux-650583/chrome-linux/chrome
+
 COPY package.json package-lock.json /app/
 
 RUN npm install
+
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="Prometheus ACT Exporter" \
@@ -19,6 +23,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.schema-version="1.0.0-rc1"
 
 COPY index.js server.js prom.js *.md /app/
+
+ENV CHROME_BIN="/usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/linux-650583/chrome-linux/chrome"
 
 ENTRYPOINT ["/usr/local/bin/node", "server.js"]
 
