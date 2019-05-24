@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 2.0.4
+
+- Upgrade puppeteer to 1.16.0
+
 # 2.0.3
 
 - Upgrade puppeteer to 1.15.0

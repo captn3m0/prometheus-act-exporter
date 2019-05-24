@@ -1,12 +1,12 @@
 # prometheus-act-exporter
 
-[![](https://images.microbadger.com/badges/version/captn3m0/prometheus-act-exporter:2.0.0-beta.svg)](https://microbadger.com/images/captn3m0/prometheus-act-exporter:2.0.0-beta) [![npm version](https://badge.fury.io/js/prometheus-act-exporter.svg)](https://badge.fury.io/js/prometheus-act-exporter) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-blue.svg)](http://www.wtfpl.net/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![](https://images.microbadger.com/badges/version/captn3m0/prometheus-act-exporter:2.0.4.svg)](https://microbadger.com/images/captn3m0/prometheus-act-exporter:2.0.4) [![npm version](https://badge.fury.io/js/prometheus-act-exporter.svg)](https://badge.fury.io/js/prometheus-act-exporter) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-blue.svg)](http://www.wtfpl.net/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from the ACT Portal website by using puppeteer.
 
--   Supports flexibytes
--   Reports aggregate metrics as well
--   Only tested for ACT Bangalore connections.
+- Supports flexibytes
+- Reports aggregate metrics as well
+- Only tested for ACT Bangalore connections.
 
 ## Metrics
 
@@ -43,7 +43,7 @@ act_fup_aggregate_total_bytes 900000000
 Install it with `npm i prometheus-act-exporter`.
 
 ```js
-const act = require('prometheus-act-exporter')
+const act = require("prometheus-act-exporter");
 let m = await act.getUsage();
 // Returns
 // {
