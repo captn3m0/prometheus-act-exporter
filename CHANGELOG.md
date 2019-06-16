@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 2.0.6
+
+- Dependency updates and Docker fixes
+
 # 2.0.5
 
 - Upgrade puppeteer to 1.17.0
