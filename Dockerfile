@@ -5,15 +5,16 @@ LABEL maintainer "Nemo <docker@captnemo.in>"
 ARG BUILD_DATE
 ARG VCS_REF
 
+ENV CHROME_REVISION=662092
+
 WORKDIR /app
 
-# Ensure that the chromium path hasn't changed
-RUN ls /usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/linux-650583/chrome-linux/chrome
+# Ensure that the chromium path hasn't changed (this fails the build early)
+RUN ls "/usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/linux-$CHROME_REVISION/chrome-linux/chrome"
 
 COPY package.json package-lock.json /app/
 
 RUN npm install
-
 
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="Prometheus ACT Exporter" \
@@ -24,7 +25,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 
 COPY index.js server.js prom.js *.md /app/
 
-ENV CHROME_BIN="/usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/linux-650583/chrome-linux/chrome"
+ENV CHROME_BIN="/usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/linux-$CHROME_REVISION/chrome-linux/chrome"
 
 ENTRYPOINT ["/usr/local/bin/node", "server.js"]
 
