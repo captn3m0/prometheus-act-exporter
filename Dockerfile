@@ -1,11 +1,11 @@
-FROM schliflo/docker-puppeteer:1.17.0
+FROM schliflo/docker-puppeteer:1.18.0
 
 LABEL maintainer "Nemo <docker@captnemo.in>"
 
 ARG BUILD_DATE
 ARG VCS_REF
 
-ENV CHROME_REVISION=662092
+ENV CHROME_REVISION=669486
 
 WORKDIR /app
 
