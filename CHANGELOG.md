@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 2.0.7
+
+- Bumps puppeteer to `1.18.0`
+
 # 2.0.6
 
 - Dependency updates and Docker fixes
