@@ -1,6 +1,6 @@
 # prometheus-act-exporter
 
-[![](https://images.microbadger.com/badges/version/captn3m0/prometheus-act-exporter:2.0.7.svg)](https://microbadger.com/images/captn3m0/prometheus-act-exporter:2.0.7) [![npm version](https://badge.fury.io/js/prometheus-act-exporter.svg)](https://badge.fury.io/js/prometheus-act-exporter) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-blue.svg)](http://www.wtfpl.net/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![](https://images.microbadger.com/badges/version/captn3m0/prometheus-act-exporter:2.0.8.svg)](https://microbadger.com/images/captn3m0/prometheus-act-exporter:2.0.8) [![npm version](https://badge.fury.io/js/prometheus-act-exporter.svg)](https://badge.fury.io/js/prometheus-act-exporter) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-blue.svg)](http://www.wtfpl.net/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from the ACT Portal website by using puppeteer.
 

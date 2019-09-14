@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 2.0.0
+
+- Bumps puppeteer to `1.20.0`
+
 # 2.0.7
 
 - Bumps puppeteer to `1.18.0`
