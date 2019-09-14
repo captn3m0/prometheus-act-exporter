@@ -5,10 +5,12 @@ LABEL maintainer "Nemo <docker@captnemo.in>"
 ARG BUILD_DATE
 ARG VCS_REF
 
-ENV CHROME_REVISION=674921
+ENV CHROME_REVISION=686378
 
 WORKDIR /app
 
+# So I can copy it to the above variable
+RUN ls "/usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/"
 # Ensure that the chromium path hasn't changed (this fails the build early)
 RUN ls "/usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/linux-$CHROME_REVISION/chrome-linux/chrome"
 
