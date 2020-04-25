@@ -62,6 +62,15 @@ You can pass the following environment variables:
 2.  `CHROME_BIN`: Set Chrome/Chromium executable path.
 3.  `DISABLE_HEADLESS`: If set, chrome will not launch in headless mode.
 
+# Usage
+
+## Docker
+
+If running via Docker, here are some simple cookbook configurations:
+
+docker run -it -p 3000:3000 -e captn3m0/prometheus-act-exporter
+: Run a simple test server locally in debug mode and test it on http://localhost:3000
+
 # LICENSE
 
 This is licensed under WTFPL. See COPYING file for the full text.

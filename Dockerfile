@@ -5,14 +5,7 @@ LABEL maintainer "Nemo <docker@captnemo.in>"
 ARG BUILD_DATE
 ARG VCS_REF
 
-ENV CHROME_REVISION=737027
-
 WORKDIR /app
-
-# So I can copy it to the above variable
-RUN ls "/usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/"
-# Ensure that the chromium path hasn't changed (this fails the build early)
-RUN ls "/usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/linux-$CHROME_REVISION/chrome-linux/chrome"
 
 COPY package.json package-lock.json /app/
 
@@ -25,10 +18,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.schema-version="1.0.0-rc1"
 
-COPY index.js server.js prom.js *.md /app/
+COPY index.js server.js prom.js *.md init.sh /app/
 
-ENV CHROME_BIN="/usr/local/share/.config/yarn/global/node_modules/puppeteer/.local-chromium/linux-$CHROME_REVISION/chrome-linux/chrome"
-
-ENTRYPOINT ["/usr/local/bin/node", "server.js"]
+ENTRYPOINT ["/app/init.sh"]
 
 EXPOSE 3000
