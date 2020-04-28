@@ -1,4 +1,4 @@
-FROM schliflo/docker-puppeteer:3.0.1
+FROM schliflo/docker-puppeteer:3.0.2
 
 LABEL maintainer "Nemo <docker@captnemo.in>"
 
@@ -18,8 +18,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.schema-version="1.0.0-rc1"
 
-COPY index.js server.js prom.js *.md init.sh /app/
+COPY index.js server.js prom.js *.md /app/
 
-ENTRYPOINT ["/app/init.sh"]
+ENTRYPOINT ["/usr/local/bin/node", "server.js"]
 
 EXPOSE 3000
