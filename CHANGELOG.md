@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 2.0.11
+
+- Dependency updates
+
 # 2.0.9
 
 - Bumps puppeteer to 3.0.1
