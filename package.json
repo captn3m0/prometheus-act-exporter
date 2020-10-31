@@ -1,6 +1,6 @@
 {
   "name": "prometheus-act-exporter",
-  "version": "2.0.11",
+  "version": "2.0.12",
   "description": "Exports ACT Fibernet data usage as prometheus metrics",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,6 @@
   "dependencies": {
     "containerized": "^1.0.2",
     "prom-client": "^12.0.0",
-    "puppeteer-core": "^5.2.1"
+    "puppeteer-core": "^5.4.1"
   }
 }
