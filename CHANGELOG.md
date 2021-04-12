@@ -1,5 +1,8 @@
 # CHANGELOG
 
+# 2.0.13
+- Dependency updates
+
 # 2.0.12
 
 - Dependency updates
