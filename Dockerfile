@@ -1,4 +1,4 @@
-FROM schliflo/docker-puppeteer:5.4.1
+FROM schliflo/docker-puppeteer:10.1.0
 
 LABEL maintainer "Nemo <docker@captnemo.in>"
 
