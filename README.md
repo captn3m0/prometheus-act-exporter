@@ -1,8 +1,8 @@
 # prometheus-act-exporter
 
-[![](https://images.microbadger.com/badges/version/captn3m0/prometheus-act-exporter:2.0.13.svg)](https://microbadger.com/images/captn3m0/prometheus-act-exporter:2.0.13) [![npm version](https://badge.fury.io/js/prometheus-act-exporter.svg)](https://badge.fury.io/js/prometheus-act-exporter) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-blue.svg)](http://www.wtfpl.net/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+![Docker Image Version (latest semver)](https://img.shields.io/docker/v/captn3m0/prometheus-act-exporter) ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/captn3m0/prometheus-act-exporter) [![npm version](https://badge.fury.io/js/prometheus-act-exporter.svg)](https://badge.fury.io/js/prometheus-act-exporter) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-blue.svg)](http://www.wtfpl.net/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from the ACT Portal website by using puppeteer.
+Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from the ACT Portal website by using puppeteer. This only support [ACT Fibernet](https://www.actcorp.in/) in India.
 
 - Supports flexibytes
 - Reports aggregate metrics as well
@@ -74,5 +74,3 @@ docker run -it -p 3000:3000 -e captn3m0/prometheus-act-exporter
 # LICENSE
 
 This is licensed under WTFPL. See COPYING file for the full text.
-
-The canonical URL for this project is <https://git.captnemo.in/nemo/prometheus-act-exporter>.

@@ -1,5 +1,13 @@
 # CHANGELOG
 
+# 3.0.0
+# Changed
+- Dependency updates
+- Changed timeout to 5 seconds for page load (was set to default of 30 seconds)
+- Adds caching so it returns the last best response instead of a 500
+# Fixed
+- Breaking API Change: Returned promise now works better by throwing errors in case of failures (instead of returning null)
+
 # 2.0.13
 - Dependency updates
 

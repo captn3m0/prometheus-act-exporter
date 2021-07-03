@@ -28,7 +28,7 @@ async function getUsage() {
   };
 
   try {
-    await page.goto(MY_ACCOUNT_URL);
+    await page.goto(MY_ACCOUNT_URL, {timeout: 5000});
     await page.click(MY_PACKAGE_SELECTOR_ID);
     // Wait for the page to switch
     await page.waitForFunction(
@@ -69,13 +69,11 @@ async function getUsage() {
     });
 
     metrics = dataUsage;
+    return metrics
   } catch (e) {
-    console.log("Couldn't scrape ACT page, faced an error");
-    console.log(e);
-    return null;
+    throw new Error("Failed scraping data from ACT");
   } finally {
     page.close();
-    return metrics;
   }
 }
 

@@ -4,7 +4,8 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 2.0.x   | :white_check_mark: |
+| 3.0.x   | :white_check_mark: Yes |
+| 2.0.x   | :negative_squared_cross_mark: No |
 
 ## Reporting a Vulnerability
 
