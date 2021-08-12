@@ -2,7 +2,7 @@
 
 ![Docker Image Version (latest semver)](https://img.shields.io/docker/v/captn3m0/prometheus-act-exporter) ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/captn3m0/prometheus-act-exporter) [![npm version](https://badge.fury.io/js/prometheus-act-exporter.svg)](https://badge.fury.io/js/prometheus-act-exporter) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-blue.svg)](http://www.wtfpl.net/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from the ACT Portal website by using puppeteer. This only support [ACT Fibernet](https://www.actcorp.in/) in India.
+Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from the ACT Portal website by using [puppeteer](https://developers.google.com/web/tools/puppeteer/). This only supports [ACT Fibernet](https://www.actcorp.in/) in India.
 
 - Supports flexibytes
 - Reports aggregate metrics as well
@@ -59,7 +59,7 @@ let m = await act.getUsage();
 You can pass the following environment variables:
 
 1.  `PROXY_SERVER`: Use a proxy server to connect to ACT. Use a `socks5` proxy, since ACT returns a 403 if you try to use a CONNECT proxy. `export PROXY_SERVER="socks5://10.8.0.14:1080"`
-2.  `CHROME_BIN`: Set Chrome/Chromium executable path.
+2.  `CHROME_BIN`: Set Chrome/Chromium executable path. Helpful if you have chromium already installed and don't want puppeteer to download it again. You can set `PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1` before running `npm install` to disable puppeteer's chromium download.
 3.  `DISABLE_HEADLESS`: If set, chrome will not launch in headless mode.
 
 # Usage
@@ -68,8 +68,9 @@ You can pass the following environment variables:
 
 If running via Docker, here are some simple cookbook configurations:
 
-docker run -it -p 3000:3000 -e captn3m0/prometheus-act-exporter
-: Run a simple test server locally in debug mode and test it on http://localhost:3000
+`docker run -it -p 3000:3000 -e captn3m0/prometheus-act-exporter`
+
+Run a simple test server locally in debug mode and test it on `http://localhost:3000/metrics`
 
 # LICENSE
 
