@@ -1,3 +1,9 @@
 .git
 node_modules
 METRICS.md
+hooks/
+.editorconfig
+.github
+CHANGELOG.md
+Dockerfile
+SECURITY.md
