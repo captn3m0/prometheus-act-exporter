@@ -72,6 +72,17 @@ If running via Docker, here are some simple cookbook configurations:
 
 Run a simple test server locally in debug mode and test it on `http://localhost:3000/metrics`
 
+## Node
+
+```sh
+export DISABLE_HEADLESS=1
+# Change to the correct invocation
+export CHROME_BIN=$(which chromium)
+npm install
+node server.js
+curl localhost:3000/metrics
+```
+
 # LICENSE
 
 This is licensed under WTFPL. See COPYING file for the full text.
