@@ -1,5 +1,4 @@
 const puppeteer = require("puppeteer-core");
-const containerized = require("containerized");
 
 const MY_PACKAGE_SELECTOR_ID =
   'table[style="margin-top:-10px;"] tr:first-child+tr';
@@ -82,10 +81,7 @@ async function getUsage() {
 }
 
 function chromeLaunchConfig() {
-  let defaultArgs = [];
-  if (containerized()) {
-    defaultArgs = ["--no-sandbox", "--disable-setuid-sandbox"];
-  }
+  let defaultArgs = ['--disable-dev-shm-usage'];
   var options = {
     // These are set for Docker usage
     // https://github.com/alekzonder/docker-puppeteer#before-usage

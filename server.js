@@ -3,7 +3,7 @@ const port = 3000;
 const metrics = require("./index");
 const promFormatter = require("./prom");
 
-CACHE = {};
+CACHE = null;
 
 const requestHandler = async (req, res) => {
   switch (req.url) {

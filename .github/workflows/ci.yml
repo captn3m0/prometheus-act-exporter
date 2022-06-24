@@ -1,0 +1,79 @@
+on: push
+name: CI
+jobs:
+  npm-tests:
+    env:
+      CHROME_BIN: /usr/bin/chromium
+    runs-on: [self-hosted]
+    strategy:
+      matrix:
+        node: ['16']
+    name: Node Tests
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v2
+      with:
+        node-version: ${{matrix.node}}
+    - run: npm install
+    - name: test
+      continue-on-error: true
+      id: test
+      run: npm test
+    - name: retry
+      continue-on-error: true
+      id: retry1
+      if: steps.test.outcome=='failure'
+      run: npm test
+    - name: set the status
+      if: always()
+      run: |
+        if ${{ steps.test.outcome=='success' || steps.retry1.outcome=='success' }}; then
+           echo "Tests Passed"
+        else
+           exit 1
+        fi
+  docker-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Docker test
+        run: |
+          wget https://github.com/tkp1n/chromium-ci/raw/41510dc154c4184f7e09461ba76f86f61c460070/seccomp/chromium.json
+          docker build -t prom-act-test .
+          docker run --security-opt seccomp=chromium.json --detach --name=prom-act-test prom-act-test
+          until [ "`docker inspect -f {{.State.Health.Status}} prom-act-test`"=="healthy" ]; do
+              sleep 1;
+              echo "Waiting for container to be healthy"
+          done;
+          # Show usage
+          docker exec prom-act-test wget -q -O- localhost:3000/metrics | grep act_fup
+          # Check logs
+          docker logs prom-act-test
+          # Stop and kill the test container
+          docker stop prom-act-test && docker rm prom-act-test && docker rmi prom-act-test
+  publish:
+    needs: [npm-tests, docker-tests]
+    runs-on: [self-hosted]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push to GitHub Container Registry
+        uses: docker/build-push-action@v2
+        if: ${{github.ref_name != 'master'}}
+        with:
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{github.ref_name}}
+      - name: Push to GitHub Container Registry (latest)
+        uses: docker/build-push-action@v2
+        if: ${{github.ref_name == 'master'}}
+        with:
+          push: true
+          tags: ghcr.io/${{ github.repository }}:latest
