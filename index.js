@@ -28,12 +28,15 @@ async function getUsage() {
   };
 
   try {
-    await page.goto(MY_ACCOUNT_URL, {timeout: 5000});
+    await page.goto(MY_ACCOUNT_URL, {timeout: 10000});
+    await page.waitForTimeout(5000);
+    await page.waitForSelector(MY_PACKAGE_SELECTOR_ID)
     await page.click(MY_PACKAGE_SELECTOR_ID);
     // Wait for the page to switch
-    await page.waitForFunction(
-      'document.querySelector(".dtl-header-text").innerText === "My Package"'
-    );
+    await page.waitForFunction(()=>{
+      return document.querySelector(".dtl-header-text").innerText === "My Package" &&
+      document.getElementById('_ACTMyAccount_WAR_ACTMyAccountportlet_:processingPanel').style.display === 'none'
+    });
 
     dataUsage = await page.evaluate(sel => {
       let elements = document.getElementsByClassName(sel);
@@ -71,6 +74,7 @@ async function getUsage() {
     metrics = dataUsage;
     return metrics
   } catch (e) {
+    console.log(e)
     throw new Error("Failed scraping data from ACT");
   } finally {
     page.close();
@@ -106,12 +110,11 @@ function chromeLaunchConfig() {
   return options;
 }
 
-// Async IIFE FTW
-(async () => {
-  browser = await puppeteer.launch(chromeLaunchConfig());
-  console.log("Browser Initialized");
-})();
-
 module.exports = {
-  getUsage: getUsage
+  getUsage: getUsage,
+  onReady: async (cb)=>{
+    browser = await puppeteer.launch(chromeLaunchConfig());
+    console.log("Browser Initialized");
+    cb(browser)
+  }
 };
