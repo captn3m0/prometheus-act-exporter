@@ -7,7 +7,7 @@ jobs:
     runs-on: [self-hosted]
     strategy:
       matrix:
-        node: ['16']
+        node: ['14', '16', '18']
     name: Node Tests
     steps:
     - uses: actions/checkout@v3
@@ -47,6 +47,8 @@ jobs:
               sleep 1;
               echo "Waiting for container to be healthy"
           done;
+          docker inspect prom-act-test
+          sleep 5
           # Show usage
           docker exec prom-act-test wget -q -O- localhost:3000/metrics | grep act_fup
           # Check logs
