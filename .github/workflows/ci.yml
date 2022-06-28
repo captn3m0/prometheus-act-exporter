@@ -42,19 +42,24 @@ jobs:
         run: |
           wget https://github.com/tkp1n/chromium-ci/raw/41510dc154c4184f7e09461ba76f86f61c460070/seccomp/chromium.json
           docker build -t prom-act-test .
-          docker run --security-opt seccomp=chromium.json --detach --name=prom-act-test prom-act-test
-          until [ "`docker inspect -f {{.State.Health.Status}} prom-act-test`"=="healthy" ]; do
-              sleep 1;
+          container_name=$(docker run --security-opt seccomp=chromium.json --detach prom-act-test)
+          echo $container_name
+          docker inspect $container_name
+          docker ps --no-trunc
+          until [ "`docker inspect -f {{.State.Health.Status}} $container_name`" == "healthy" ]; do
+              sleep 10;
               echo "Waiting for container to be healthy"
+              docker inspect -f {{.State.Health}} $container_name
+              docker logs $container_name
           done;
-          docker inspect prom-act-test
+          docker inspect $container_name
           sleep 5
           # Show usage
-          docker exec prom-act-test wget -q -O- localhost:3000/metrics | grep act_fup
+          docker exec $container_name wget -q -O- localhost:3000/metrics | grep act_fup
           # Check logs
-          docker logs prom-act-test
+          docker logs $container_name
           # Stop and kill the test container
-          docker stop prom-act-test && docker rm prom-act-test && docker rmi prom-act-test
+          docker stop $container_name && docker rm $container_name && docker rmi prom-act-test
   publish:
     needs: [npm-tests, docker-tests]
     runs-on: [self-hosted]
