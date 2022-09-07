@@ -1,6 +1,6 @@
 # prometheus-act-exporter
 
-![Docker Image Version (latest semver)](https://img.shields.io/docker/v/captn3m0/prometheus-act-exporter) ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/captn3m0/prometheus-act-exporter) [![npm version](https://badge.fury.io/js/prometheus-act-exporter.svg)](https://badge.fury.io/js/prometheus-act-exporter) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-blue.svg)](http://www.wtfpl.net/) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+![Docker Image Version (latest semver)](https://img.shields.io/docker/v/captn3m0/prometheus-act-exporter) ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/captn3m0/prometheus-act-exporter) [![npm version](https://badge.fury.io/js/prometheus-act-exporter.svg)](https://badge.fury.io/js/prometheus-act-exporter) [![License: WTFPL](https://img.shields.io/badge/License-WTFPL-blue.svg)](http://www.wtfpl.net/) [![CI](https://github.com/captn3m0/prometheus-act-exporter/actions/workflows/ci.yml/badge.svg)](https://github.com/captn3m0/prometheus-act-exporter/actions/workflows/ci.yml)
 
 Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from the ACT Portal website by using [puppeteer](https://developers.google.com/web/tools/puppeteer/). This only supports [ACT Fibernet](https://www.actcorp.in/) in India.
 
@@ -42,17 +42,7 @@ act_fup_aggregate_total_bytes 900000000
 
 Install it with `npm i prometheus-act-exporter`.
 
-```js
-const act = require("prometheus-act-exporter");
-let m = await act.getUsage();
-// Returns
-// {
-//   live: { usedBytes: 0, totalBytes: 800000000 },
-//   flexibytes: { usedBytes: 102580000, totalBytes: 100000000 },
-//   aggregate: { usedBytes: 102580000, totalBytes: 900000000 }
-// }
-// calculations made assuming ACT is using SI GB (exactly 1 billion bytes)
-```
+See `test.js` for sample usage.
 
 # Configuration
 
@@ -68,20 +58,14 @@ You can pass the following environment variables:
 
 If running via Docker, here are some simple cookbook configurations:
 
-`docker run -it -p 3000:3000 -e captn3m0/prometheus-act-exporter`
-
-Run a simple test server locally in debug mode and test it on `http://localhost:3000/metrics`
-
-## Node
-
-```sh
-export DISABLE_HEADLESS=1
-# Change to the correct invocation
-export CHROME_BIN=$(which chromium)
-npm install
-node server.js
-curl localhost:3000/metrics
 ```
+wget https://github.com/tkp1n/chromium-ci/raw/41510dc154c4184f7e09461ba76f86f61c460070/seccomp/chromium.json
+docker run --security-opt seccomp=chromium.json -it -p 3000:3000 -e captn3m0/prometheus-act-exporter
+```
+
+Note that the above uses a [minimal secure seccomp profile for running Chromium inside Docker](https://github.com/docker/for-linux/issues/496#issuecomment-441149510).
+
+**Warning**: You should [not be running](https://ndportmann.com/chrome-in-docker/) this using `--privileged` or `--cap-add=SYS_ADMIN`, or `--no-sandbox`.
 
 # LICENSE
 

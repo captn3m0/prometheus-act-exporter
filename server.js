@@ -3,32 +3,15 @@ const port = 3000;
 const metrics = require("./index");
 const promFormatter = require("./prom");
 
-CACHE = {};
+CACHE = null;
 
 const requestHandler = async (req, res) => {
-  let date = new Date(Date.now()).toLocaleString();
-  console.log(`${date}: ${req.url}`);
   switch (req.url) {
     case "/metrics":
       res.setHeader("Content-Type", promFormatter.contentType);
-      metrics.getUsage().then(
-        (data) => {
-          console.log(data);
-          console.log("Setting cache");
-          CACHE = data;
-          promFormatter.format(data).then((data) => {
-            res.end(data);
-          });
-        },
-        (err) => {
-          console.log(err);
-          console.log("Got error, using cache");
-          console.log(CACHE);
-          promFormatter.format(CACHE).then((data) => {
-            res.end(data);
-          });
-        }
-      );
+      promFormatter.format(CACHE).then((data) => {
+        res.end(data);
+      });
       break;
     default:
       res.writeHead(302, {
@@ -41,10 +24,29 @@ const requestHandler = async (req, res) => {
 
 const server = http.createServer(requestHandler);
 
-server.listen(port, (err) => {
-  if (err) {
-    return console.log("could not initialize web server", err);
-  }
+metrics.onReady((browser) => {
+  let t;
+  (function refreshCache() {
+    metrics.getUsage().then((data) => {
+      let date = new Date(Date.now()).toLocaleString();
+      console.log(`${date}: Updated Cache`);
+      // Start server now if this is the first run
+      if (!CACHE) {
+        server.listen(port, (err) => {
+          if (err) {
+            return console.log("could not initialize web server", err);
+          }
+          console.log(`server is listening on ${port}`);
+        });
+      }
+      CACHE = data;
+    }).finally(()=>{
+      t = setTimeout(refreshCache, 15 * 60 * 1000);
+    });
+  })();
 
-  console.log(`server is listening on ${port}`);
+  process.on("exit", function () {
+    browser.close();
+    clearTimeout(t)
+  });
 });
