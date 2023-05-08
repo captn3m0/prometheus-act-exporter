@@ -24,6 +24,6 @@
   "dependencies": {
     "containerized": "^1.0.2",
     "prom-client": "^14.0.1",
-    "puppeteer-core": "^19.0.0"
+    "puppeteer-core": "^20.1.2"
   }
 }
