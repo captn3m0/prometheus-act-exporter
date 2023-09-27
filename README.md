@@ -4,6 +4,8 @@
 
 Exposes your current ACT FUP usage as prometheus metrics. Scrapes the data from the ACT Portal website by using [puppeteer](https://developers.google.com/web/tools/puppeteer/). This only supports [ACT Fibernet](https://www.actcorp.in/) in India.
 
+**Note**: Broken since the portal got redesigned and now requires authentication.
+
 - Supports flexibytes
 - Reports aggregate metrics as well
 - Only tested for ACT Bangalore connections.
